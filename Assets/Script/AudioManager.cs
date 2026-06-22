@@ -18,4 +18,9 @@ public class AudioManager : MonoBehaviour
     {
         musicSource.volume = volume;
     }
+
+    public void ToggleMusic(bool isOn)
+    {
+        musicSource.mute = !isOn;
+    }
 }
