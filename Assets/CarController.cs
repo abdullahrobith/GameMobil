@@ -35,9 +35,13 @@ public class CarController : MonoBehaviour
     private float horizontal;
     private bool braking;
 
+    private RaceProgress progress;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        progress = GetComponent<RaceProgress>();
 
         rb.centerOfMass = new Vector3(0, -0.5f, 0);
 
@@ -53,11 +57,13 @@ public class CarController : MonoBehaviour
 
     void Update()
     {
-        vertical = Keyboard.current.wKey.isPressed ? 1 :
-                Keyboard.current.sKey.isPressed ? -1 : 0;
+        vertical =
+            Keyboard.current.wKey.isPressed ? 1 :
+            Keyboard.current.sKey.isPressed ? -1 : 0;
 
-        horizontal = Keyboard.current.aKey.isPressed ? -1 :
-                    Keyboard.current.dKey.isPressed ? 1 : 0;
+        horizontal =
+            Keyboard.current.aKey.isPressed ? -1 :
+            Keyboard.current.dKey.isPressed ? 1 : 0;
 
         braking = Keyboard.current.spaceKey.isPressed;
 
@@ -112,46 +118,22 @@ public class CarController : MonoBehaviour
 
     void UpdateEngineSound()
     {
-        if (engineAudio == null) return;
+        if (engineAudio == null)
+            return;
 
-        float throttle =
-            Mathf.Abs(vertical);
+        float throttle = Mathf.Abs(vertical);
 
         float targetPitch =
             Mathf.Lerp(
                 idlePitch,
                 maxPitch,
-                throttle
-            );
+                throttle);
 
         engineAudio.pitch =
             Mathf.Lerp(
                 engineAudio.pitch,
                 targetPitch,
-                pitchSmoothness * Time.deltaTime
-            );
-    }
-
-    void HandleEngineSound()
-    {
-        if (engineAudio == null) return;
-
-        bool movingInput = Mathf.Abs(vertical) > 0.1f;
-
-        if (movingInput)
-        {
-            if (!engineAudio.isPlaying)
-            {
-                engineAudio.Play();
-            }
-        }
-        else
-        {
-            if (engineAudio.isPlaying)
-            {
-                engineAudio.Stop();
-            }
-        }
+                pitchSmoothness * Time.deltaTime);
     }
 
     void UpdateWheel(WheelCollider collider, Transform wheel)
@@ -162,8 +144,6 @@ public class CarController : MonoBehaviour
         collider.GetWorldPose(out position, out rotation);
 
         wheel.position = position;
-
-        // Koreksi rotasi roda
         wheel.rotation = rotation * Quaternion.Euler(0, 0, 90);
     }
 }

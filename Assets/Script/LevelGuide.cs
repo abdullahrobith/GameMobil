@@ -15,28 +15,27 @@ public class LevelGuide : MonoBehaviour
     public CarController carController;
 
     [Header("Enemy AI")]
-    public EnemyAI[] enemyAI;
+    public EnemyNavMeshAI[] enemyAI;
+    public GameObject lapPanel;
 
     void Start()
     {
-        // Tampilkan panel guide
         guidePanel.SetActive(true);
 
-        // Sembunyikan countdown
         countdownObject.SetActive(false);
 
-        // Matikan kontrol player
+        if (lapPanel != null)
+            lapPanel.SetActive(false);
+
         if (carController != null)
             carController.enabled = false;
 
-        // Matikan semua AI
-        foreach (EnemyAI ai in enemyAI)
+        foreach (EnemyNavMeshAI ai in enemyAI)
         {
             if (ai != null)
-                ai.enabled = false;
+                ai.StopAI();
         }
 
-        // Pause game
         Time.timeScale = 0f;
     }
 
@@ -69,11 +68,15 @@ public class LevelGuide : MonoBehaviour
             carController.enabled = true;
 
         // Aktifkan semua Bot
-        foreach (EnemyAI ai in enemyAI)
+        foreach (EnemyNavMeshAI ai in enemyAI)
         {
             if (ai != null)
-                ai.enabled = true;
+                ai.StartAI();
         }
+
+        // Munculkan UI Lap
+        if (lapPanel != null)
+            lapPanel.SetActive(true);
 
         yield return new WaitForSeconds(0.3f);
 
