@@ -3,45 +3,54 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    [Header("Panel")]
     public GameObject pausePanel;
-    public GameObject settingPanel;
+
+    [Header("Gameplay UI")]
+    public GameObject gameplayUI;
+
 
     void Start()
     {
         pausePanel.SetActive(false);
-        settingPanel.SetActive(false);
     }
+
 
     public void PauseGame()
     {
         pausePanel.SetActive(true);
+
+        if (gameplayUI != null)
+            gameplayUI.SetActive(false);
+
         Time.timeScale = 0f;
     }
+
 
     public void ResumeGame()
     {
         pausePanel.SetActive(false);
+
+        if (gameplayUI != null)
+            gameplayUI.SetActive(true);
+
         Time.timeScale = 1f;
     }
 
+
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(
+            SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void OpenSetting()
-    {
-        settingPanel.SetActive(true);
-    }
-
-    public void CloseSetting()
-    {
-        settingPanel.SetActive(false);
-    }
 
     public void QuitToMainMenu()
     {
         Time.timeScale = 1f;
+
         SceneManager.LoadScene("MainMenu");
     }
 }

@@ -30,7 +30,8 @@ public class LevelGuide : MonoBehaviour
     public GameObject gasButton;
     public GameObject brakeButton;
 
-
+    [Header("Timer")]
+    public RaceTimer raceTimer;
 
     void Start()
     {
@@ -148,7 +149,8 @@ public class LevelGuide : MonoBehaviour
                 ai.StartAI();
         }
 
-
+        if (raceTimer != null)
+        raceTimer.StartTimer();
 
         // tampilkan HUD
         if(lapPanel != null)

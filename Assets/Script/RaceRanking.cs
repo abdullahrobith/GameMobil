@@ -36,8 +36,23 @@ public class RaceRanking : MonoBehaviour
 
         for (int i = 0; i < finishOrder.Count; i++)
         {
-            rankingText.text +=
-                (i + 1) + ". " + finishOrder[i] + "\n";
+            if (finishOrder[i] == "KAMU")
+            {
+                rankingText.text +=
+                    "<color=#FFD700><b>"
+                    + (i + 1)
+                    + ". "
+                    + finishOrder[i]
+                    + "</b></color>\n";
+            }
+            else
+            {
+                rankingText.text +=
+                    (i + 1)
+                    + ". "
+                    + finishOrder[i]
+                    + "\n";
+            }
         }
     }
 }

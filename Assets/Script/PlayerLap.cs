@@ -3,29 +3,37 @@ using TMPro;
 
 public class PlayerLap : MonoBehaviour
 {
+    [Header("UI")]
+    public GameObject gameplayUI;
     public TMP_Text lapText;
     public GameObject finishPanel;
 
+    [Header("Race")]
     public int maxLap = 3;
 
-    int currentLap = 1;
-    bool passedMiddle = false;
-    bool raceFinished = false;
+    private int currentLap = 1;
+    private bool passedMiddle = false;
+    private bool raceFinished = false;
 
     void Start()
     {
-        lapText.gameObject.SetActive(false);
-        finishPanel.SetActive(false);
+        if (lapText != null)
+            lapText.gameObject.SetActive(false);
+
+        if (finishPanel != null)
+            finishPanel.SetActive(false);
     }
 
     public void ShowLapUI()
     {
-        lapText.gameObject.SetActive(true);
+        if (lapText != null)
+            lapText.gameObject.SetActive(true);
+
         UpdateUI();
     }
 
     public void PassedMiddle()
-    { 
+    {
         passedMiddle = true;
     }
 
@@ -41,16 +49,23 @@ public class PlayerLap : MonoBehaviour
 
         currentLap++;
 
+        // Sudah menyelesaikan semua lap
         if (currentLap > maxLap)
         {
             raceFinished = true;
 
-            int rank =
-                RaceRanking.Instance.RegisterFinish("KAMU");
+            RaceRanking.Instance.RegisterFinish("KAMU");
 
-            finishPanel.SetActive(true);
+            // Sembunyikan Gameplay UI
+            if (gameplayUI != null)
+                gameplayUI.SetActive(false);
 
-            Time.timeScale = 0;
+            // Tampilkan Finish Panel
+            if (finishPanel != null)
+                finishPanel.SetActive(true);
+
+            // Pause game
+            Time.timeScale = 0f;
 
             return;
         }
@@ -60,6 +75,9 @@ public class PlayerLap : MonoBehaviour
 
     void UpdateUI()
     {
+        if (lapText == null)
+            return;
+
         lapText.text = "Lap " + currentLap + "/" + maxLap;
     }
 }

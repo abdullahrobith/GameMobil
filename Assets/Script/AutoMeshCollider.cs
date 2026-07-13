@@ -1,17 +1,18 @@
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshCollider))]
 public class AutoMeshCollider : MonoBehaviour
 {
-    void Start()
+    private void Awake()
     {
-        MeshCollider meshCollider = gameObject.AddComponent<MeshCollider>();
-
         MeshFilter meshFilter = GetComponent<MeshFilter>();
+        MeshCollider meshCollider = GetComponent<MeshCollider>();
 
+        meshCollider.sharedMesh = null;
         meshCollider.sharedMesh = meshFilter.sharedMesh;
 
-        // Opsional
         meshCollider.convex = false;
+        meshCollider.enabled = true;
     }
 }
